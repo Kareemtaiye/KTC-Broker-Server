@@ -1,0 +1,15 @@
+{
+  "name": "ktc-b",
+  "version": "1.0.0",
+  "description": "server-for-KTC",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ktc",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express.js": "^1.0.0"
+  }
+}
