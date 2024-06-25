@@ -1,0 +1,26 @@
+const dotenv = require('dotenv');
+
+dotenv.config({ path: 'config.env' });
+const mongoose = require('mongoose');
+const app = require('./app');
+
+const { DATABASE, DATABASE_PASSWORD, PORT } = process.env;
+console.log(process.env.NODE_ENV);
+
+const db = DATABASE.replace('<password>', DATABASE_PASSWORD);
+
+mongoose.connect(db).then(() => {
+  console.log('Database connection succesful');
+});
+
+const port = PORT || 8000;
+const server = app.listen(port, '127.0.0.1', () => {
+  console.log(`Listening to server on port ${port}`);
+});
+
+process.on('unhandledRejection', err => {
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
