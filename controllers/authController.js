@@ -46,6 +46,13 @@ exports.signUp = catchAsync(async (req, res, next) => {
     //sends the encoded token to theb mail
     await new Email(user, url).verifyEmail();
     await user.save({ validateBeforeSave: false });
+    res.status(201).json({
+      status: 'success',
+      message: 'User created',
+      data: {
+        user,
+      },
+    });
   } catch (err) {
     console.log(err);
     return next(
@@ -55,13 +62,6 @@ exports.signUp = catchAsync(async (req, res, next) => {
       ),
     );
   }
-  res.status(201).json({
-    status: 'success',
-    message: 'User created',
-    data: {
-      user,
-    },
-  });
 });
 
 exports.verifyEmail = catchAsync(async (req, res, next) => {

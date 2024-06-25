@@ -9,9 +9,12 @@ const {
   EMAIL_PASSWORD,
   EMAIL_HOST,
   EMAIL_PORT,
-  EMAIL_PASSWORD_PROD,
-  EMAIL_USERNAME_PROD,
+  APP_EMAIL,
+  APP_PASSWORD,
 } = process.env;
+
+console.log(APP_EMAIL, APP_PASSWORD);
+
 module.exports = class SendMail {
   constructor(user, url) {
     this.username = user.username;
@@ -23,10 +26,14 @@ module.exports = class SendMail {
   mailTransport() {
     if (NODE_ENV === 'production') {
       return nodemailer.createTransport({
-        host: 'SendGrid',
+        host: 'smtp.gmail.com',
+        port: 465,
         auth: {
-          user: EMAIL_USERNAME_PROD,
-          pass: EMAIL_PASSWORD_PROD,
+          user: APP_EMAIL,
+          pass: APP_PASSWORD,
+        },
+        tls: {
+          rejectUnauthorized: false,
         },
       });
     }
@@ -58,7 +65,13 @@ module.exports = class SendMail {
         text: htmlToText.convert(`${html}`),
       };
 
-      await this.mailTransport().sendMail(mailOptions);
+      await this.mailTransport().sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log('err', err);
+        } else {
+          console.log('Sent', info);
+        }
+      });
     } catch (err) {
       console.log('Sending Error', err);
     }
