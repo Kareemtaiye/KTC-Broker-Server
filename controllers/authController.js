@@ -100,10 +100,9 @@ exports.login = async (req, res, next) => {
   }
 
   const user = await User.findOne({ email }).select('+password');
-  console.log(user);
+
   //compare the incoming password with the saved password
   const checkPassword = await user?.comparePasswords(password, user.password);
-  console.log(checkPassword);
   if (!user || !checkPassword) {
     return next(new AppError('Incorrect email or password'), 400);
   }
@@ -165,10 +164,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   console.lo;
 
-  const user2 = await User.findOne({
-    passwordResetToken: hashedToken,
-  });
-  console.log(user2);
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetTokenExpiresIn: { $gt: Date.now() },

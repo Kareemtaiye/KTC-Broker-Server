@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const app = require('./app');
 
 const { DATABASE, DATABASE_PASSWORD, PORT } = process.env;
-console.log(process.env.NODE_ENV);
 
 const db = DATABASE.replace('<password>', DATABASE_PASSWORD);
 
